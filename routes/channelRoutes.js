@@ -1,36 +1,11 @@
-// controllers/channelController.js
-import Channel from "../models/Channel.js";
+// routes/channelRoutes.js
+import express from "express";
+import { createChannel, getChannelById } from "../controllers/channelController.js";
 
-export const createChannel = async (req, res) => {
-  try {
-    const { channelName, description, channelBanner } = req.body;
-    const ownerId = req.user._id; // Authenticated user ID
 
-    // Check if the user already has a channel
-    const existingChannel = await Channel.findOne({ owner: ownerId });
-    if (existingChannel) {
-      return res.status(400).json({
-        success: false,
-        message: "User already has a channel.",
-      });
-    }
+const router = express.Router();
 
-    // Create a new channel
-    const newChannel = new Channel({
-      channelName,
-      description,
-      channelBanner,
-      owner: ownerId,
-    });
+router.post("/create-channel", createChannel);
+router.get("/channel", getChannelById);
 
-    await newChannel.save();
-
-    res.status(201).json({
-      success: true,
-      message: "Channel created successfully.",
-      channel: newChannel,
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+export default router;

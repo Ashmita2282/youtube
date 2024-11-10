@@ -10,20 +10,27 @@ const channelSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
-    unique: true, // Each user can only own one channel
+    unique: true,
   },
   description: String,
   channelBanner: String,
-  subscribers: {
-    type: Number,
-    default: 0,
-  },
+  subscribers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    }
+  ],
   videos: [
     {
       type: Schema.Types.ObjectId,
       ref: "Video",
     },
   ],
+  channelURL: {
+    type: String,
+    required: true,
+    unique: true,
+  },
 }, { timestamps: true });
 
 export default mongoose.model("Channel", channelSchema);
