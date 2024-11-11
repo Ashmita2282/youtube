@@ -36,7 +36,7 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "User registered successfully.",
-      newUser,
+      data: newUser,
     });
   } catch (error) {
     res.status(500).json({
@@ -83,8 +83,7 @@ const login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
-      token,
-      user,
+      data: token,
     });
   } catch (error) {
     // Catch any errors and send a 500 response with error details
@@ -96,4 +95,13 @@ const login = async (req, res) => {
   }
 };
 
-export default { register, login };
+const me = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id);
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+export default { register, login, me };

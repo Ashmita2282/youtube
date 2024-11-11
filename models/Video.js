@@ -7,6 +7,11 @@ const videoSchema = new Schema({
     type: String,
     required: true,
   },
+  videoUrl: {
+    type: String,
+    required: true,
+    default: "https://youtu.be/tBgNpc39FJk?t=15",
+  }, // URL for the video file
   description: String,
   thumbnailUrl: String, // URL for the video's thumbnail image
   channelId: {
@@ -45,17 +50,13 @@ const videoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User", // Reference to the user who made the comment
       },
-      text: String, // Text of the comment
-      timestamp: {
-        type: Date,
-        default: Date.now, // Automatically set the timestamp
-      },
+      commentText: String, // Text of the comment
     },
   ],
   uploadDate: {
     type: Date,
     default: Date.now,
   },
-});
+}, { timestamps: true });
 
 export default mongoose.model("Video", videoSchema);
